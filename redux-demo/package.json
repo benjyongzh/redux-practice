@@ -1,0 +1,23 @@
+{
+  "name": "redux-practice",
+  "version": "1.0.0",
+  "description": "Testing out redux for the first time, in the context of react.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benjyongzh/redux-practice.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/benjyongzh/redux-practice/issues"
+  },
+  "homepage": "https://github.com/benjyongzh/redux-practice#readme",
+  "dependencies": {
+    "redux": "^4.2.1"
+  }
+}
