@@ -20,7 +20,7 @@ const icecreamSlice = createSlice({
       state.numOfIcecreams--;
     },
     restocked: (state, action) => {
-      state.numOfIcecreams += action.payload;
+      state.numOfIcecreams += parseInt(action.payload);
     },
   },
   //use extraReducers for actions which affect other reducers as well (eg, buy 1 cake, get a free icecream)

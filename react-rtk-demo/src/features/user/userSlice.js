@@ -10,9 +10,12 @@ const initialState = {
 //createAsyncThunk takes 2 args. first is the action name. 2nd is the callback function to create the payload
 //createAsyncThunk automatically creates promises: pending, fulfilled or rejected action types
 export const fetchUsers = createAsyncThunk("user/fetchUsers", () => {
-  return axios
-    .get("https://jsonplaceholder.typicode.com/uhsers")
-    .then((response) => response.data.map((user) => user.id));
+  return (
+    axios
+      .get("https://jsonplaceholder.typicode.com/users")
+      // .then((response) => response.data.map((user) => user.id));
+      .then((response) => response.data)
+  );
   // .catch();// dont need catch block because error will be handled already
 });
 
