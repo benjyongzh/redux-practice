@@ -2,6 +2,7 @@
 const redux = require("redux");
 const createStore = redux.createStore;
 const bindActionCreators = redux.bindActionCreators;
+const combineReducers = redux.combineReducers;
 
 const BUY_CAKE = "BUY_CAKE";
 const RESTOCK_CAKE = "RESTOCK_CAKE";
@@ -42,13 +43,21 @@ function restockIceCream(qty = 1) {
 }
 
 // reducer = (previousState, action) => newState
-const initialState = {
+// const initialState = {
+//   numOfCakes: 10,
+//   numOfIceCreams: 20, // multiple objects in a state is possible
+// };
+
+const initialCakeState = {
   numOfCakes: 10,
-  numOfIceCreams: 20, // multiple objects in a state is possible
+};
+
+const initialIceCreamState = {
+  numOfIceCreams: 20,
 };
 
 // standard form of a reducer
-const reducer = (state = initialState, action) => {
+const cakeReducer = (state = initialCakeState, action) => {
   switch (
     action.type // switch to see what kind of action is being input
   ) {
@@ -63,6 +72,14 @@ const reducer = (state = initialState, action) => {
         ...state,
         numOfCakes: state.numOfCakes + action.payload, // use action.payload to refer to the action's payload, which can be an argument of the dispatched action
       };
+    // always have a default action for unaccounted for actions
+    default:
+      return state;
+  }
+};
+
+const iceCreamReducer = (state = initialIceCreamState, action) => {
+  switch (action.type) {
     case BUY_ICECREAM:
       return {
         ...state,
@@ -73,13 +90,21 @@ const reducer = (state = initialState, action) => {
         ...state,
         numOfIceCreams: state.numOfIceCreams + action.payload,
       };
-    // always have a default action for unaccounted for actions
     default:
       return state;
   }
 };
 
-const store = createStore(reducer); //standard syntax for creating a store. 1 reducer as an arg
+//standard syntax for creating a store. 1 reducer as an arg
+// const store = createStore(reducer);
+
+//syntax for combine reducers
+const rootReducer = combineReducers({
+  cake: cakeReducer,
+  iceCream: iceCreamReducer,
+});
+const store = createStore(rootReducer);
+
 console.log("Initial State: ", store.getState()); // store has a getState() to get the current state of the store
 
 // subscribe takes a function as an arg. this function is run whenever the state is changed
