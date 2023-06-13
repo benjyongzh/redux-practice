@@ -105,6 +105,11 @@ const iceCreamReducer = (state = initialIceCreamState, action) => {
         ...state,
         numOfIceCreams: state.numOfIceCreams + action.payload,
       };
+    case BUY_CAKE: //can still respond to actions not concerning this reducer, although it can only affect its own objects. This is an issue solved by redux-toolkit
+      return {
+        ...state,
+        numOfIceCreams: state.numOfIceCreams - 1,
+      };
     default:
       return state;
   }
@@ -119,14 +124,14 @@ const rootReducer = combineReducers({
   iceCream: iceCreamReducer,
 });
 // can add middleware into createStore
-const store = createStore(rootReducer, applyMiddleware(logger));
+const store = createStore(rootReducer /* applyMiddleware(logger) */);
 
 console.log("Initial State: ", store.getState()); // store has a getState() to get the current state of the store
 
 // subscribe takes a function as an arg. this function is run whenever the state is changed
 const unsubscribe = store.subscribe(() => {
   //this subscription is taken care of by the reduxlogger
-  // console.log("Update State: ", store.getState());
+  console.log("Update State: ", store.getState());
 }); //capture the subscribed function to be able to unsubscribe later on
 
 //dispatch takes an action as an arg

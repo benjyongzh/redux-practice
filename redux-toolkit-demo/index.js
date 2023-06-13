@@ -6,7 +6,8 @@ const icecreamActions =
 console.log("initial state: ", store.getState());
 
 const unsubscribe = store.subscribe(() => {
-  console.log("Update state: ", store.getState());
+  //redux-logger middleware will do this already
+  // console.log("Update state: ", store.getState());
 });
 
 store.dispatch(cakeActions.ordered());
