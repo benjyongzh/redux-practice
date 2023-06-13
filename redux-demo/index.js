@@ -3,6 +3,14 @@ const redux = require("redux");
 const createStore = redux.createStore;
 const bindActionCreators = redux.bindActionCreators;
 const combineReducers = redux.combineReducers;
+const applyMiddleware = redux.applyMiddleware;
+
+//immer
+const produce = require("immer").produce;
+
+//redux-logger. this logs each action. so there is no need to subscribe to a console.log for each action
+const reduxLogger = require("redux-logger");
+const logger = reduxLogger.createLogger();
 
 const BUY_CAKE = "BUY_CAKE";
 const RESTOCK_CAKE = "RESTOCK_CAKE";
@@ -63,10 +71,17 @@ const cakeReducer = (state = initialCakeState, action) => {
   ) {
     case BUY_CAKE:
       //always return aa completely new object
-      return {
-        ...state, // use spread to make a copy of the oldState, then only edit the numOfCakes
-        numOfCakes: state.numOfCakes - 1,
-      };
+      // return {
+      //   ...state, // use spread to make a copy of the oldState, then only edit the numOfCakes
+      //   numOfCakes: state.numOfCakes - 1,
+      // };
+
+      // learning about immer to prevent use of spread state
+      // syntax: produce(currentState, <function that takes a draft copy of that state, to be edited in the function>)
+      return produce(state, (draft) => {
+        draft.numOfCakes = state.numOfCakes - 1;
+      });
+
     case RESTOCK_CAKE:
       return {
         ...state,
@@ -103,13 +118,15 @@ const rootReducer = combineReducers({
   cake: cakeReducer,
   iceCream: iceCreamReducer,
 });
-const store = createStore(rootReducer);
+// can add middleware into createStore
+const store = createStore(rootReducer, applyMiddleware(logger));
 
 console.log("Initial State: ", store.getState()); // store has a getState() to get the current state of the store
 
 // subscribe takes a function as an arg. this function is run whenever the state is changed
 const unsubscribe = store.subscribe(() => {
-  console.log("Update State: ", store.getState());
+  //this subscription is taken care of by the reduxlogger
+  // console.log("Update State: ", store.getState());
 }); //capture the subscribed function to be able to unsubscribe later on
 
 //dispatch takes an action as an arg
@@ -131,5 +148,3 @@ actions.buyIceCream();
 actions.buyIceCream();
 actions.restockIceCream(2);
 unsubscribe();
-
-console.log("final state: ", store.getState());
