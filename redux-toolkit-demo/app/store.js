@@ -6,6 +6,7 @@ const reduxLogger = require("redux-logger");
 //reducers
 const cakeReducer = require("../features/cake/cakeSlice");
 const icecreamReducer = require("../features/icecream/icecreamSlice");
+const userReducer = require("../features/user/userSlice");
 
 const logger = reduxLogger.createLogger();
 
@@ -16,9 +17,10 @@ const store = configureStore({
   reducer: {
     cake: cakeReducer,
     icecream: icecreamReducer,
+    user: userReducer,
   },
   //middleware takes a function that has getDefaultMiddleware. concat your middleware to it
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+  //   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 });
 
 module.exports = store;
